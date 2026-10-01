@@ -1,0 +1,48 @@
+# Development files
+.vscode/**
+.vscode-test/**
+.github/**
+node_modules/**
+!node_modules/vscode-languageclient/**
+!node_modules/vscode-languageserver-protocol/**
+!node_modules/vscode-languageserver-types/**
+!node_modules/vscode-jsonrpc/**
+!node_modules/semver/**
+!node_modules/minimatch/**
+!node_modules/brace-expansion/**
+!node_modules/balanced-match/**
+
+# Build files
+*.vsix
+*.log
+
+# Source control
+.git
+.gitignore
+.gitattributes
+
+# Documentation (keep readme.md)
+SETUP.md
+
+# Test files
+test/**
+tests/**
+*.test.js
+*.spec.js
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Sample files (optional - remove if you want to keep)
+# sample.lm

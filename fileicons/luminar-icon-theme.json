@@ -1,0 +1,11 @@
+{
+  "iconDefinitions": {
+    "_lm_file": {
+      "iconPath": "../images/icons.png"
+    }
+  },
+  "fileExtensions": {
+    "lm": "_lm_file"
+  },
+  "hidesExplorerArrows": false
+}

@@ -1,0 +1,415 @@
+{
+  "Function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:param}: ${3:Type}): ${4:ReturnType} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Function definition"
+  },
+  "Function Simple": {
+    "prefix": "fns",
+    "body": [
+      "fn ${1:name}() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Simple function without parameters"
+  },
+  "Function with Error Handling": {
+    "prefix": "fne",
+    "body": [
+      "fn ${1:name}(${2:param}: ${3:Type}): ${4:ReturnType}?${5:ErrorType} {",
+      "    if (${6:condition}) {",
+      "        return err(${5:ErrorType});",
+      "    }",
+      "    return ok($0);",
+      "}"
+    ],
+    "description": "Function with error handling"
+  },
+  "Class": {
+    "prefix": "class",
+    "body": [
+      "class ${1:Name} {",
+      "    fn init(${2:params}) {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "Class with init method"
+  },
+  "Class Inline Constructor": {
+    "prefix": "classi",
+    "body": [
+      "class ${1:Name}(${2:param}: ${3:Type}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Class with inline constructor"
+  },
+  "Class with Inheritance": {
+    "prefix": "classh",
+    "body": [
+      "class ${1:Name}(${2:params}) : ${3:Parent}(${4:args}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Class with inheritance"
+  },
+  "Type Alias": {
+    "prefix": "type",
+    "body": [
+      "type ${1:Name} = ${2:Type};"
+    ],
+    "description": "Type alias"
+  },
+  "Type Struct": {
+    "prefix": "types",
+    "body": [
+      "type ${1:Name} = { ${2:field}: ${3:Type} };"
+    ],
+    "description": "Structural type definition"
+  },
+  "Type Union": {
+    "prefix": "typeu",
+    "body": [
+      "type ${1:Name} = ${2:Type1} | ${3:Type2};"
+    ],
+    "description": "Union type definition"
+  },
+  "Type Refined": {
+    "prefix": "typer",
+    "body": [
+      "type ${1:Name} = ${2:Type} where ${3:condition};"
+    ],
+    "description": "Refined type with constraint"
+  },
+  "Module": {
+    "prefix": "module",
+    "body": [
+      "module ${1:Name} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Module definition"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (var ${1:i} = 0; ${1:i} < ${2:n}; ${1:i} += 1) {",
+      "    $0",
+      "}"
+    ],
+    "description": "C-style for loop"
+  },
+  "Iter Loop": {
+    "prefix": "iter",
+    "body": [
+      "iter (${1:item} in ${2:collection}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Iterator loop"
+  },
+  "Iter Range": {
+    "prefix": "iterr",
+    "body": [
+      "iter (${1:i} in ${2:start}..${3:end}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Range-based iterator loop"
+  },
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ife",
+    "body": [
+      "if (${1:condition}) {",
+      "    ${2}",
+      "} else {",
+      "    $0",
+      "}"
+    ],
+    "description": "If-else statement"
+  },
+  "If-Elif-Else Statement": {
+    "prefix": "ifel",
+    "body": [
+      "if (${1:condition}) {",
+      "    ${2}",
+      "} elif (${3:condition}) {",
+      "    ${4}",
+      "} else {",
+      "    $0",
+      "}"
+    ],
+    "description": "If-elif-else statement"
+  },
+  "Match Expression": {
+    "prefix": "match",
+    "body": [
+      "match (${1:value}) {",
+      "    val(${2:x}) => { $3 },",
+      "    err(${4:e}) => { $0 }",
+      "}"
+    ],
+    "description": "Match expression for error handling"
+  },
+  "Match Pattern": {
+    "prefix": "matchp",
+    "body": [
+      "match (${1:value}) {",
+      "    ${2:pattern} => { $3 },",
+      "    _ => { $0 }",
+      "}"
+    ],
+    "description": "Match expression with patterns"
+  },
+  "Error Handling with ? else": {
+    "prefix": "qelse",
+    "body": [
+      "${1:expression}? else ${2:error} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Error handling with else clause"
+  },
+  "Contract": {
+    "prefix": "contract",
+    "body": [
+      "contract(${1:condition}, \"${2:error message}\");"
+    ],
+    "description": "Runtime assertion"
+  },
+  "Variable Declaration": {
+    "prefix": "var",
+    "body": [
+      "var ${1:name}: ${2:Type} = ${3:value};"
+    ],
+    "description": "Variable declaration with type"
+  },
+  "Constant Declaration": {
+    "prefix": "const",
+    "body": [
+      "const ${1:name}: ${2:Type} = ${3:value};"
+    ],
+    "description": "Constant declaration"
+  },
+  "Print Statement": {
+    "prefix": "print",
+    "body": [
+      "print(${1:value});"
+    ],
+    "description": "Print statement"
+  },
+  "Print with Interpolation": {
+    "prefix": "printi",
+    "body": [
+      "print(\"${1:text} {${2:variable}}\");"
+    ],
+    "description": "Print with string interpolation"
+  },
+  "Import Module": {
+    "prefix": "import",
+    "body": [
+      "import ${1:ModuleName};"
+    ],
+    "description": "Import a module"
+  },
+  "Import with Alias": {
+    "prefix": "importas",
+    "body": [
+      "import ${1:ModuleName} as ${2:alias};"
+    ],
+    "description": "Import module with alias"
+  },
+  "Public Decorator": {
+    "prefix": "@public",
+    "body": [
+      "@public",
+      "fn ${1:name}(${2:params}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Public function with decorator"
+  },
+  "Method Definition": {
+    "prefix": "method",
+    "body": [
+      "fn ${1:name}(${2:params}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Method definition inside a class"
+  },
+  "Init Constructor": {
+    "prefix": "init",
+    "body": [
+      "fn init(${1:params}) {",
+      "    self.${2:field} = ${3:value};",
+      "    $0",
+      "}"
+    ],
+    "description": "Class constructor"
+  },
+  "List Declaration": {
+    "prefix": "list",
+    "body": [
+      "var ${1:name}: [${2:Type}] = [${3:values}];"
+    ],
+    "description": "List declaration"
+  },
+  "Dictionary Declaration": {
+    "prefix": "dict",
+    "body": [
+      "var ${1:name}: {${2:KeyType}: ${3:ValueType}} = { ${4:key}: ${5:value} };"
+    ],
+    "description": "Dictionary declaration"
+  },
+  "Async Function": {
+    "prefix": "fna",
+    "body": [
+      "async fn ${1:name}(${2:params}): ${3:ReturnType} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Async function definition"
+  },
+  "Await Expression": {
+    "prefix": "await",
+    "body": [
+      "await ${1:expression}"
+    ],
+    "description": "Await expression"
+  },
+  "Trait Definition": {
+    "prefix": "trait",
+    "body": [
+      "trait ${1:Name} {",
+      "    fn ${2:method}(${3:params});",
+      "    $0",
+      "}"
+    ],
+    "description": "Trait definition"
+  },
+  "Impl Block": {
+    "prefix": "impl",
+    "body": [
+      "impl ${1:Trait} for ${2:Type} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Implementation block"
+  },
+  "Frame": {
+    "prefix": "frame",
+    "body": [
+      "frame ${1:Name} {",
+      "    pub ${2:field}: ${3:int};",
+      "",
+      "    pub init(${4:w}: ${3:int}) {",
+      "        self.${2:field} = ${4:w};",
+      "    }",
+      "",
+      "    pub fn ${5:method}(): ${6:int} {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "Limitly Frame definition"
+  },
+  "Frame Implements Trait": {
+    "prefix": "framet",
+    "body": [
+      "frame ${1:Name}: ${2:Shape} {",
+      "    pub init(${3:params}) {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "Limitly Frame implementing a Trait"
+  },
+  "Immutable Local val": {
+    "prefix": "val",
+    "body": [
+      "val ${1:name} = ${2:value};"
+    ],
+    "description": "Immutable local variable binding (val)"
+  },
+  "Atomic Variable": {
+    "prefix": "atomic",
+    "body": [
+      "var ${1:counter}: atomic = ${2:0};"
+    ],
+    "description": "Atomic variable declaration"
+  },
+  "Parallel Block": {
+    "prefix": "parallel",
+    "body": [
+      "parallel(cores=${1:2}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Parallel execution block"
+  },
+  "Concurrent Block": {
+    "prefix": "concurrent",
+    "body": [
+      "concurrent(cores=${1:2}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Concurrent execution block"
+  },
+  "Task Block": {
+    "prefix": "task",
+    "body": [
+      "task(${1:i} in ${2:1..10}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Spawns parallel tasks"
+  },
+  "Worker Block": {
+    "prefix": "worker",
+    "body": [
+      "worker(${1:data} in ${2:stream}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Worker stream processing"
+  },
+  "Import Show": {
+    "prefix": "importshow",
+    "body": [
+      "import ${1:std.collections} show ${2:Iterator};"
+    ],
+    "description": "Import module with show filter"
+  },
+  "Import Symbols": {
+    "prefix": "importsym",
+    "body": [
+      "import ${1:std.collections} { ${2:List, Map} };"
+    ],
+    "description": "Import specific symbols from a module"
+  }
+}

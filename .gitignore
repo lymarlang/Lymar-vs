@@ -1,0 +1,101 @@
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
+
+*~
+*.autosave
+*.a
+*.core
+*.moc
+*.o
+*.obj
+*.orig
+*.rej
+*.so
+*.so.*
+*_pch.h.cpp
+*_resource.rc
+*.qm
+*.log
+# *.txt
+.#*
+*.*#
+core
+!core/
+tags
+.cache
+.kiro
+.qoder
+.vscode
+.windsurf
+.DS_Store
+.directory
+*.debug
+*.prl
+*.app
+*.vsix
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Build artifacts
+build/
+bin/
+*.exe
+*.s
+node_modules/
+
+# Vendored dependencies (keep the structure but ignore generated files within)
+# vendor/fyra/
+vendor/fyra/build/
+vendor/fyra/*.a
+vendor/fyra/*.so
+vendor/fyra/*.dll
+# vendor/fyra/.git/
+# vendor/lyra/build/
+vendor/lyra/*.a
+vendor/lyra/*.so
+vendor/lyra/*.dll
+# vendor/lyra/.git/
+
+# qtcreator generated files
+*.pro.user*
+CMakeLists.txt.user*
+Limitly.pro*
+Luminar.pro*
+!editors/
+
+# xemacs temporary files
+*.flc
+
+# Vim temporary files
+.*.swp
+
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
+
+# MinGW generated files
+*.Debug
+*.Release
+
+# Python byte code
+*.pyc
+
+# Other
+Thumbs.db
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
+.cache

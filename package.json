@@ -1,0 +1,289 @@
+{
+  "name": "luminar",
+  "displayName": "Luminar & Limitly Language Support",
+  "description": "Complete language support for Luminar and Limitly: Language Server Protocol (LSP), syntax highlighting, IntelliSense, snippets, formatting, and file icons",
+  "version": "1.2.3",
+  "publisher": "netesy",
+  "license": "MIT",
+  "icon": "images/icons.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "limitly",
+    "luminar",
+    "lsp",
+    "syntax",
+    "highlighting",
+    "intellisense",
+    "snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:limitly",
+    "onLanguage:luminar"
+  ],
+  "main": "./src/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/netesy/luminar-syntax"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "luminar-icons",
+        "label": "Luminar File Icons",
+        "path": "./fileicons/luminar-icon-theme.json"
+      }
+    ],
+    "languages": [
+      {
+        "id": "limitly",
+        "aliases": [
+          "Limitly",
+          "limitly"
+        ],
+        "extensions": [
+          ".lm"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "luminar",
+        "aliases": [
+          "Luminar",
+          "luminar"
+        ],
+        "extensions": [
+          ".lm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "limitly.restartLsp",
+        "title": "Limitly: Restart Language Server",
+        "category": "Limitly"
+      },
+      {
+        "command": "limitly.selectCompiler",
+        "title": "Limitly: Set Compiler Location",
+        "category": "Limitly"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Limitly Language Support",
+      "properties": {
+        "limitly.compiler.path": {
+          "type": "string",
+          "default": "c:\\Projects\\limitly\\bin\\limitly.exe",
+          "description": "Path to the Limitly compiler executable (limitly.exe). Used for the Language Server (LSP) and compilation."
+        },
+        "limitly.lsp.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Limitly Language Server (LSP) for diagnostics, proof-aware completions, and hovers"
+        },
+        "limitly.lsp.path": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path to the Limitly LSP binary (optional override; if not set, defaults to limitly.compiler.path)"
+        },
+        "limitly.lsp.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Limitly Language Server"
+        }
+      }
+    },
+    "semanticTokenScopes": [
+      {
+        "language": "limitly",
+        "scopes": {
+          "namespace": [
+            "entity.name.namespace"
+          ],
+          "type": [
+            "entity.name.type"
+          ],
+          "class": [
+            "entity.name.type.class"
+          ],
+          "enum": [
+            "entity.name.type.enum"
+          ],
+          "interface": [
+            "entity.name.type.interface"
+          ],
+          "struct": [
+            "entity.name.type.struct"
+          ],
+          "typeParameter": [
+            "entity.name.type.parameter"
+          ],
+          "parameter": [
+            "variable.parameter"
+          ],
+          "variable": [
+            "variable"
+          ],
+          "property": [
+            "variable.property"
+          ],
+          "enumMember": [
+            "variable.other.enummember"
+          ],
+          "event": [
+            "variable.other.event"
+          ],
+          "function": [
+            "entity.name.function"
+          ],
+          "method": [
+            "entity.name.function.method"
+          ],
+          "macro": [
+            "entity.name.function.macro"
+          ],
+          "keyword": [
+            "keyword"
+          ],
+          "modifier": [
+            "storage.modifier"
+          ],
+          "comment": [
+            "comment"
+          ],
+          "string": [
+            "string"
+          ],
+          "number": [
+            "constant.numeric"
+          ],
+          "regexp": [
+            "string.regexp"
+          ],
+          "operator": [
+            "keyword.operator"
+          ]
+        }
+      },
+      {
+        "language": "luminar",
+        "scopes": {
+          "namespace": [
+            "entity.name.namespace"
+          ],
+          "type": [
+            "entity.name.type"
+          ],
+          "class": [
+            "entity.name.type.class"
+          ],
+          "enum": [
+            "entity.name.type.enum"
+          ],
+          "interface": [
+            "entity.name.type.interface"
+          ],
+          "struct": [
+            "entity.name.type.struct"
+          ],
+          "typeParameter": [
+            "entity.name.type.parameter"
+          ],
+          "parameter": [
+            "variable.parameter"
+          ],
+          "variable": [
+            "variable"
+          ],
+          "property": [
+            "variable.property"
+          ],
+          "enumMember": [
+            "variable.other.enummember"
+          ],
+          "event": [
+            "variable.other.event"
+          ],
+          "function": [
+            "entity.name.function"
+          ],
+          "method": [
+            "entity.name.function.method"
+          ],
+          "macro": [
+            "entity.name.function.macro"
+          ],
+          "keyword": [
+            "keyword"
+          ],
+          "modifier": [
+            "storage.modifier"
+          ],
+          "comment": [
+            "comment"
+          ],
+          "string": [
+            "string"
+          ],
+          "number": [
+            "constant.numeric"
+          ],
+          "regexp": [
+            "string.regexp"
+          ],
+          "operator": [
+            "keyword.operator"
+          ]
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "limitly",
+        "scopeName": "source.luminar",
+        "path": "./syntaxes/luminar.tmLanguage.json"
+      },
+      {
+        "language": "luminar",
+        "scopeName": "source.luminar",
+        "path": "./syntaxes/luminar.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "limitly",
+        "path": "./snippets/luminar.code-snippets"
+      },
+      {
+        "language": "luminar",
+        "path": "./snippets/luminar.code-snippets"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "echo 'No build step required'",
+    "package": "vsce package",
+    "test": "echo 'No tests defined yet'"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.6.2",
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.80.0"
+  }
+}

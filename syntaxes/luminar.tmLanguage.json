@@ -1,0 +1,160 @@
+{
+  "scopeName": "source.luminar",
+  "name": "Luminar",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#decorators" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#error-handling" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#constants" },
+    { "include": "#operators" },
+    { "include": "#property-access" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.double-slash.luminar", "match": "//.*$" },
+        { "name": "comment.line.triple-slash.luminar", "match": "///.*$" },
+        { "name": "comment.block.luminar", "begin": "/\\*", "end": "\\*/" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.luminar",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.luminar", "match": "\\\\." },
+            {
+              "name": "meta.interpolation.luminar",
+              "begin": "\\$\\{",
+              "end": "\\}",
+              "patterns": [
+                {
+                  "name": "source.luminar.embedded",
+                  "patterns": [
+                    { "include": "#variables" },
+                    { "include": "#numbers" },
+                    { "include": "#keywords" },
+                    { "include": "#operators" },
+                    { "include": "#types" },
+                    { "include": "#functions" }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "variable.interpolated.luminar",
+              "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
+            },
+            {
+              "name": "meta.interpolation.luminar",
+              "begin": "\\{",
+              "end": "\\}",
+              "patterns": [
+                { "include": "#expressions" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.float.luminar", "match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b" },
+        { "name": "constant.numeric.integer.luminar", "match": "\\b0x[0-9A-Fa-f]+\\b" },
+        { "name": "constant.numeric.integer.luminar", "match": "\\b\\d+\\b" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.luminar",
+          "match": "\\b(?:if|else|elif|for|iter|while|match|break|continue|return|task|worker|async|await|unsafe|staged|concurrent|parallel|defer)\\b"
+        },
+        {
+          "name": "keyword.declaration.luminar",
+          "match": "\\b(fn|type|class|frame|enum|trait|interface|mixin|implements|module|import|from|export|mut|const|var|val|atomic|impl|pub|prot|static|abstract|final|show|hide)\\b"
+        },
+        {
+          "name": "keyword.operator.luminar",
+          "match": "\\b(and|or|not|!|in|as|is|where|contract|is_error|is_success|matches)\\b"
+        },
+        {
+          "name": "keyword.other.lifecycle.luminar",
+          "match": "\\b(init|deinit)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        { "name": "storage.type.luminar", "match": "\\b(?:int|uint|float|nil|i8|i16|i32|i64|i128|u8|u16|u32|u64|u128|f32|f64|d2|d4|d6|decimal|bool|str|any|channel|atomic|list|dict|tuple|array)\\b" },
+        { "name": "variable.parameter.typehint.luminar", "match": ":[ ]*[A-Za-z_][A-Za-z0-9_]*" },
+        { "name": "entity.name.type.alias.luminar", "match": "\\b[A-Z][A-Za-z0-9_]*\\b" }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        { "name": "entity.name.function.luminar", "match": "\\bfn\\s+([A-Za-z_][A-Za-z0-9_]*)", "captures": { "1": { "name": "entity.name.function.luminar" } } },
+        { "name": "variable.function.luminar", "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()" }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        { "name": "constant.language.luminar", "match": "\\b(?:true|false|nil)\\b" },
+        { "name": "keyword.other.fallible.luminar", "match": "\\b(?:ok|err)\\b" }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.error.luminar", "match": "\\?(?=\\s*(else|[,;\\)\\}]))" },
+        { "name": "keyword.operator.range.luminar", "match": "\\.\\." },
+        { "name": "keyword.operator.arrow.luminar", "match": "=>" },
+        { "name": "keyword.operator.spread.luminar", "match": "\\.\\.\\." },
+        { "name": "keyword.operator.power.luminar", "match": "\\*\\*" },
+        { "name": "keyword.operator.bitwise.luminar", "match": "[~^&|]" },
+        { "name": "keyword.operator.comparison.luminar", "match": "(==|!=|<=|>=|<|>)" },
+        { "name": "keyword.operator.assignment.luminar", "match": "(\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|=)" },
+        { "name": "keyword.operator.arithmetic.luminar", "match": "[-+*/%]" },
+        { "name": "punctuation.bracket.luminar", "match": "[{}()\\[\\],;:]" }
+      ]
+    },
+    "decorators": {
+      "patterns": [
+        { "name": "storage.modifier.decorator.luminar", "match": "@(public|private|protected|[A-Za-z_][A-Za-z0-9_]*)" }
+      ]
+    },
+    "error-handling": {
+      "patterns": [
+        { "name": "keyword.control.error.luminar", "match": "\\?\\s*else\\s+[A-Za-z_][A-Za-z0-9_]*" },
+        { "name": "storage.type.error.luminar", "match": "\\?[A-Z][A-Za-z0-9_]*(,\\s*[A-Z][A-Za-z0-9_]*)*" }
+      ]
+    },
+    "property-access": {
+      "patterns": [
+        { "name": "variable.language.luminar", "match": "\\b(self|super)\\b" },
+        { "name": "variable.other.property.luminar", "match": "(?<=\\.)([A-Za-z_][A-Za-z0-9_]*)" }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        { "name": "variable.other.luminar", "match": "\\b([a-z_][A-Za-z0-9_]*)\\b" }
+      ]
+    },
+    "expressions": {
+      "patterns": [
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#keywords" },
+        { "include": "#operators" },
+        { "include": "#types" },
+        { "include": "#variables" }
+      ]
+    }
+  }
+}

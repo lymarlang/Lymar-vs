@@ -1,0 +1,620 @@
+// sample.lm
+
+// Luminar Programming Language
+// Key Features:
+// - Controlled Unsafe Operations
+
+// ---------------------------------------------------
+// Basic Syntax
+// ---------------------------------------------------
+
+// ---------------------------------------------------
+// Core Type System
+// ---------------------------------------------------
+
+// === Primitive Types ===
+type date = i64;
+type numbers = u64;
+type amount = f64;
+type isTrue = bool;
+type string = str;
+
+// === Type Aliases ===
+type Id = uint;
+type Name = str;
+type Age = uint;
+
+// === Option Type ===
+type SomeKind = str;
+type SomeValue = any;
+type Some = { kind: SomeKind, value: SomeValue };
+type epty = nil;  
+
+type Options = Some | epty;
+
+// Example usage:
+// var maybeName: Option = { kind: "Some", value: "Alice" };
+// var noValue: Option = nil;
+
+// === Result Type ===
+type ResultKind = str;
+type ResultValue = any;
+type ResultMessage = any;
+type Success = { kind: ResultKind, value: ResultValue };
+type Error = { kind: ResultKind, message: ResultMessage };
+
+type Result = Success | Error;
+
+// Example usage:
+// var res: Result = { kind: "Success", value: 42 };
+// var err: Result = { kind: "Error", message: "Not found" };
+
+// === Collection Types ===
+type ListOfAny = [any];
+type ListOfString = [str];
+type ListOfPerson = [Person];
+
+type DictOfAny = {any: any};
+type DictOfString = {str: str};
+type DictOfIntToUser = {int: User};
+
+// === Union Types ===
+type NumberType = int | f64;
+type StringOrNumber = str | NumberType;
+
+// === Refined Types ===
+type PositiveInt = int where value > 0;
+type EmailString = str where matches(value, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+type Percentage = float where value >= 0.0 and value <= 100.0;
+
+// === Structural Types ===
+type NameType = str;
+type AgeType = uint;
+type HasName = { name: NameType };
+type HasAge = { age: AgeType };
+type Person = HasName and HasAge;
+
+// === Extensible Structural Types ===
+type StreetType = str;
+type CityType = str;
+type ZipType = str;
+type EmailType = str;
+type PhoneType = str;
+type EmployeeIdType = uint;
+type DepartmentType = str;
+type Address = { street: StreetType, city: CityType, zipcode: ZipType };
+type ContactInfo = { email: EmailType, phone: PhoneType };
+type Employee = { ...Person, ...Address, ...ContactInfo, employeeId: EmployeeIdType, department: DepartmentType };
+type Manager = { ...Employee, managedTeam: [Employee] };
+type ExtendedRecord = { ...BaseRecord, newField: int };
+type MultipleBaseRecord = { ...Base1, ...Base2, additionalField: bool };
+
+// Arithmetic and Logical Operations
+print(10 + 5 * 2);                  // Output: 20
+print((10 > 5) and (5 < 2));        // false
+print("Hello, " + "Luminar!");      // String concatenation
+
+
+// === Loops ===
+
+// C-style loop
+for (var i = 0; i < 10; i += 1) {
+    print(i);
+}
+
+// Range-based loop
+iter (i in 1..5) {
+    print("Range iteration: {i}");
+}
+
+// List-based loop with explicit string list type
+var fruits: ListOfString = ["Apple", "Banana", "Cherry"];
+iter (fruit in fruits) {
+    print(fruit);
+}
+
+// Dictionary-based loop with defined key/value type
+type KeyType = str;
+type ValueType = int;
+type DictOfStrToInt = {KeyType: ValueType};
+var my_dict: DictOfStrToInt = { "a": 1, "b": 2, "c": 3 };
+iter (key, value in my_dict) {
+    print("{key}: {value}");
+}
+
+// Nested loop
+iter (x in 1..3) {
+    iter (y in 1..2) {
+        print("x: {x}, y: {y}");
+    }
+}
+
+// While loop
+var count: int = 0;
+while (count < 3) {
+    print("Count: {count}");
+    count += 1;
+}
+
+// Test 1: Basic error construction with type checking
+fn test_error_construction() {
+    // Valid error construction
+    var error_val = err(DivisionByZero);
+    print("Error construction test:", error_val);
+    
+    // Compile-time error: Unknown error type
+    // var unknown_error = err(NonExistentError);
+    
+    // Compile-time error: Missing error type
+    // var missing_error = err();
+}
+
+// Test 2: Success value construction with type checking
+fn test_success_construction() {
+    // Valid success values
+    var success_val = ok(42);
+    var success_str = ok("success");
+    print("Success construction test:", success_val, success_str);
+    
+    // Compile-time error: ok() requires exactly one argument
+    // var invalid_ok = ok();
+    // var too_many_args = ok(1, 2);
+}
+
+// Test 3: Fallible expression with error propagation and type checking
+fn divide(a: int, b: int): int?DivisionByZero {
+    if (b == 0) {
+        return err(DivisionByZero);
+    }
+    return ok(a / b);
+}
+
+
+fn test_error_propagation() {
+    // Valid usage
+    var result = divide(10, 2)?;
+    print("Division result:", result);
+    
+    // Error propagation
+    // var error_result = divide(10, 0)?;  // Will propagate DivisionByZero
+    print("This should not print due to error propagation");
+    
+  //  Compile-time error: Unhandled error type 'Overflow'
+    var unhandled = parse_number("123")?;
+}
+
+// Test 4: Fallible expression with error handling and type checking
+fn test_error_handling() {
+    // Valid error handling
+   var result = divide(10, 0)? else error {
+       print("Caught error:", error);
+       return -1;
+   };
+    
+    // Type checking in error handler
+    var parsed = parse_number("123")? else error {
+        // Compile-time error: Type mismatch in error handling
+        // if (error == "DivisionByZero") { ... }
+        
+        // Valid type checking
+        if (error == "InvalidNumber") {
+            print("Invalid number format");
+        } elif (error == "Overflow") {
+            print("Number too large");
+        }
+        return -1;
+    };
+    
+    print("Result after error handling:", result);
+}
+
+// Test 5: Error type checking and pattern matching
+fn test_error_checking() {
+    var success_val = ok(42);
+    var error_val = err(TestError);
+    
+    // Type checking with is_error/is_success
+    if (is_error(success_val)) {
+        print("Success value incorrectly identified as error");
+    } else {
+        print("Success value correctly identified");
+    }
+    
+    if (is_error(error_val)) {
+        print("Error value correctly identified");
+    } else {
+        print("Error value incorrectly identified as success");
+    }
+    
+    // Pattern matching with match expression
+    match (divide(10, 0)) {
+        val(x) => {print("Got value:", x); },
+        err(e) => { print("Got error:", e); },
+    }
+    
+    // Compile-time error: Non-exhaustive match
+    match (divide(10, 2)) {
+        val(x) => print("Got value:", x)
+    }
+}
+
+// Test 6: Error type composition
+fn process_data(data: string): string?IOError, ParseError {
+    // Simulate processing that can fail
+    if (data == "") {
+        return err(ParseError);
+    }
+    return ok("processed_" + data);
+}
+
+    // Function that composes multiple fallible operations
+    fn process_and_divide(s: string, divisor: int): int?IOError, ParseError, DivisionByZero {
+        var processed = process_data(s)?;
+        return divide(processed.length, divisor)?;
+    }
+
+fn test_error_composition() {
+
+    
+    // // Valid usage with all error types handled
+    var result = process_and_divide("test", 2)? else error {
+        if (error == "DivisionByZero") {
+            print("Cannot divide by zero");
+        } else if (error == "ParseError") {
+            print("Failed to parse input");
+        } else if (error == "IOError") {
+            print("IO error occurred");
+        }
+        return -1;
+    };
+    
+    print("Processed result:", result);
+}
+
+// Test 7: Error type inference
+fn test_type_inference() {
+    print("Testing type inference with errors");
+    // Type inference for error unions
+    var maybe_num: int? = divide(10, 2);  // Explicit type
+    var inferred = divide(10, 0);          // Inferred as int?DivisionByZero
+    
+    // Compile-time error: Type mismatch
+    var wrong_type: string? = divide(10, 0);
+    
+    // Explicit error type annotation
+    var with_errors: int?DivisionByZero = divide(10, 2);
+    
+    // Compile-time error: Missing error type
+    var missing_error: int? = err(SomeError);
+}
+
+// Run tests
+test_error_construction();
+test_success_construction();
+test_error_propagation();
+test_error_handling();
+test_error_checking();
+test_error_composition();
+test_type_inference();
+
+var name: str = "Hello world"; 
+
+// === I/O Operations ===
+
+/// Writes string content to a file.
+fn write_to_file(filename: str, content: str) {
+ //   var file = open(filename, "write");
+ //   file.write(content);
+ //   file.close();
+ print("File written successfully.");
+}
+
+/// Reads full contents of a file. Returns `Option`.
+fn read_from_file(filename: str): Option {
+ //   var file = open(filename, "read");
+ //   var content = file.read_all();
+ //   file.close();
+ print("File read successfully.");
+ //   return { kind: Some, value: content };
+}
+
+// === Modules ===
+
+///@private: Accessible only within the file.
+///@protected: Accessible within the module but not externally.
+
+module MathUtils {
+    @public
+    fn add(a: int, b: int): int {
+        return a + b;
+    }
+
+    @public
+    fn subtract(a: int, b: int): int {
+        return a - b;
+    }
+
+    fn factorial(n: int): int {
+        if (n <= 1) { return 1; }
+        return n * factorial(n - 1);
+    }
+}
+
+import MathUtils;
+print(MathUtils.add(5, 3));         // Output: 8
+// print(MathUtils.factorial(4));   // Not public, won't compile
+
+
+
+// === Function Contracts ===
+
+/// Square root function with pre- and post-conditions.
+fn sqrt(x: amount): amount {
+    contract(x >= 0, "Cannot compute sqrt of negative number");
+    var result = x ** 0.5;
+    contract(result >= 0, "Result must be non-negative");
+    return result;
+}
+
+// === Class Contracts ===
+
+/// A simple bank account class enforcing invariant rules.
+class BankAccount {
+    var balance: amount;
+
+    BankAccount(initial_balance: amount) {
+        contract(initial_balance >= 0, "Initial balance cannot be negative");
+        self.balance = initial_balance;
+    }
+
+    fn deposit(amount: amount) {
+        contract(amount > 0, "Deposit amount must be positive");
+        self.balance += amount;
+    }
+
+    fn withdraw(amount: amount) {
+        contract(amount > 0, "Withdrawal amount must be positive");
+        contract(self.balance >= amount, "Insufficient funds");
+        self.balance -= amount;
+    }
+}
+
+// Test class inheritance with refined syntax
+print("=== Class Inheritance Tests ===")
+
+class Animal {
+    fn init(name: str) {
+        self.name = name;
+    }
+    
+    fn speak() {
+        print("{self.name} makes a sound");
+    }
+    
+    fn info() {
+        print("Animal is {self.name}");
+    }
+}
+
+print("Dog Class:")
+// Derived class with super constructor call
+class Dog(name: str, breed: str) : Animal(name) {
+    fn speak() {
+        print("{self.name} barks!");
+    }
+    
+    fn wagTail() {
+        print("{self.name} wags tail happily");
+    }
+    
+    fn info() {
+        print("Dog {self.name} is a {self.breed}");
+    }
+}
+
+print("Cat Class:")
+
+// Another derived class
+class Cat(name: str) : Animal(name) {
+    fn speak() {
+        print("{self.name} meows");
+    }
+    
+    fn purr() {
+        print("{self.name} purrs contentedly");
+    }
+}
+
+// Alternative syntax for more complex inheritance scenarios
+class SmartDog(name: str, breed: str, iq: int) : Dog(name, breed) {
+    fn speak() {
+        super.speak();  // Call parent method
+        print("Woof woof! (intelligently)");
+    }
+    
+    fn solve(problem: str) {
+        print("{self.name} solves: {problem}");
+    }
+    
+    fn getIQ() {
+        return self.iq;
+    }
+}
+
+// Additional inline constructor examples for testing
+class Bird(name: str, species: str, canFly: bool) : Animal(name) {
+    fn speak() {
+        print("{self.name} chirps melodiously");
+    }
+    
+    fn fly() {
+        if (self.canFly) {
+            print("{self.name} soars through the sky");
+        } else {
+            print("{self.name} cannot fly but runs fast");
+        }
+    }
+    
+    fn info() {
+        print("Bird {self.name} is a {self.species}");
+    }
+}
+
+class Fish(name: str, waterType: str) : Animal(name) {
+    fn speak() {
+        print("{self.name} makes bubbles");
+    }
+    
+    fn swim() {
+        print("{self.name} swims gracefully in {self.waterType} water");
+    }
+    
+    fn info() {
+        print("Fish {self.name} lives in {self.waterType} water");
+    }
+}
+
+// Hybrid pet class using explicit constructor for complex initialization
+class HybridPet : Animal {
+    var species1: str;
+    var species2: str;
+    var age: int;
+    var isValidHybrid: bool;
+    var traits: [str];
+    
+    fn init(name: str, species1: str, species2: str, age: int) {
+        super.init(name);  // Call parent's implicit constructor
+        
+        // Validation logic
+        if (age < 0 and age > 30) {
+            //use print later
+            print("Invalid age for hybrid pet: {age}");
+        }
+        
+        // Check for valid species combinations
+        if (species1 == species2) {
+            print("Cannot create hybrid from same species: {species1}");
+        }
+        
+        self.species1 = species1;
+        self.species2 = species2;
+        self.age = age;
+        self.isValidHybrid = self.validateHybrid();
+        self.traits = self.generateTraits();
+        
+        print("Created hybrid pet {self.name}: {self.species1}-{self.species2} mix");
+        if (!self.isValidHybrid) {
+            print("Warning: Unusual hybrid combination detected");
+        }
+    }
+    
+    fn validateHybrid() {
+        // Simple validation - real hybrids are typically within animal families
+        var validCombos = [
+            ["Cat", "Lion"], ["Dog", "Wolf"], ["Horse", "Donkey"],
+            ["Tiger", "Lion"], ["Cat", "Tiger"], ["Dog", "Fox"]
+        ];
+        
+        iter (combo in validCombos) {
+            if ((combo[0] == self.species1 or combo[1] == self.species2) and
+                (combo[0] == self.species2 or combo[1] == self.species1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    fn generateTraits() {
+        var traits = [];
+        
+        // Add traits based on species combination
+        if (self.species1 == "Cat" and self.species2 == "Cat") {
+            traits.append("agile");
+            traits.append("independent");
+        }
+        if (self.species1 == "Dog" and self.species2 == "Dog") {
+            traits.append("loyal");
+            traits.append("energetic");
+        }
+        if (self.species1 == "Lion" and self.species2 == "Lion") {
+            traits.append("strong");
+            traits.append("proud");
+        }
+        
+        return traits;
+    }
+    
+    fn speak() {
+        if (self.isValidHybrid) {
+            print("{self.name} makes a unique {self.species1}-{self.species2} sound");
+        } else {
+            print("{self.name} makes an unusual hybrid sound that's hard to describe");
+        }
+    }
+    
+    fn getHybridInfo() {
+        print("{self.name} is {self.age} years old and is a mix of {self.species1} and {self.species2}");
+        print("Valid hybrid: {self.isValidHybrid}");
+        print("Traits: {self.traits.join(', ')}");
+    }
+    
+    fn displayTraits() {
+        print("{self.name}'s traits:");
+        iter (traity in self.traits) {
+            print("  - {traity}");
+        }
+    }
+}
+
+print("Inheritance test:")
+var dog = Dog("Buddy", "Golden Retriever");
+print("Cat class constructor:");
+var cat = Cat("Whiskers");
+print("Smart Dog class constructor:");
+var smartDog = SmartDog("Einstein", "Border Collie", 150);
+
+// Test new inline constructor classes
+var eagle = Bird("Sky", "Bald Eagle", true);
+var penguin = Bird("Waddles", "Emperor Penguin", false);
+var goldfish = Fish("Bubbles", "fresh");
+var shark = Fish("Bruce", "salt");
+var hybrid = HybridPet("Unique", "Cat", "Dog", 3);
+
+print("Dog methods:")
+dog.info();
+dog.speak();
+dog.wagTail();
+
+print("Cat methods:")
+cat.info();
+cat.speak();
+cat.purr();
+
+print("Smart dog methods:");
+smartDog.info();
+smartDog.speak();
+smartDog.solve("fetch puzzle");
+print("Einstein's IQ: {smartDog.getIQ()}");
+
+print("Bird methods:")
+eagle.info();
+eagle.speak();
+eagle.fly();
+
+penguin.info();
+penguin.speak();
+penguin.fly();
+
+print("Fish methods:")
+goldfish.info();
+goldfish.speak();
+goldfish.swim();
+
+shark.info();
+shark.speak();
+shark.swim();
+
+print("Hybrid pet methods:")
+hybrid.info();
+hybrid.speak();
+hybrid.getHybridInfo();
